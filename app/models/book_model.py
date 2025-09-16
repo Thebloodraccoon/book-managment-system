@@ -9,6 +9,7 @@ from sqlalchemy import (
     String
 )
 from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.orm import relationship
 
 from app.settings import settings
 
