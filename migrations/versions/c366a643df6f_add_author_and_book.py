@@ -1,4 +1,4 @@
-"""Add author and book
+"""Add author and books
 
 Revision ID: c366a643df6f
 Revises: 9da97c395bde

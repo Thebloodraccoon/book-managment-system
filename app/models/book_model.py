@@ -51,5 +51,7 @@ class Book(settings.Base):  # type: ignore
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
                         onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
+    author = relationship("Author", back_populates="books")
+
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author='{self.author_id}', year={self.published_year})>"

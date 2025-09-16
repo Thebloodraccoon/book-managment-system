@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.auth.services import AuthService
 from app.auth.utils.token_utils import verify_token
+from app.books.services import BookService
 from app.exceptions.auth_exceptions import AdminAccessException
 from app.settings import settings
 from app.settings.local import get_redis
@@ -30,12 +31,18 @@ def get_user_service(db: DatabaseDep) -> UserService:
     return UserService(db)
 
 
+def get_book_service(db: DatabaseDep) -> BookService:
+    """Get Book service instance."""
+    return BookService(db)
+
+
 def get_auth_service(db: DatabaseDep) -> AuthService:
-    """Get Race service instance."""
+    """Get Auth service instance."""
     return AuthService(db)
 
 
 UserServiceDep = Annotated[UserService, Depends(get_user_service)]
+BookServiceDep = Annotated[BookService, Depends(get_book_service)]
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
 
 

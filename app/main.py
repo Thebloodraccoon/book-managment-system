@@ -8,6 +8,7 @@ from app.middleware.error_handler import setup_error_handlers
 from app.ping.endpoints import router as ping_router
 from app.auth.endpoints import router as auth_router
 from app.users.endpoints import router as user_router
+from app.books.endpoints import router as book_router
 from app.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,7 @@ def setup_routers(app: FastAPI) -> None:
     app.include_router(ping_router, prefix=f"{api_prefix}/ping", tags=["Health Check"])
     app.include_router(auth_router, prefix=f"{api_prefix}/auth", tags=["Auth"])
     app.include_router(user_router, prefix=f"{api_prefix}/users", tags=["Users"])
+    app.include_router(book_router, prefix=f"{api_prefix}/books", tags=["Books"])
 
 
 app = FastAPI(
