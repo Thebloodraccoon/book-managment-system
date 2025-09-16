@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
@@ -36,10 +35,10 @@ class BookCreate(BookBase):
 
 
 class BookUpdate(BaseModel):
-    title: Optional[str] = None
-    published_year: Optional[int] = None
-    genre: Optional[GenreEnum] = None
-    author_name: Optional[str] = None
+    title: str | None = None
+    published_year: int | None = None
+    genre: GenreEnum | None = None
+    author_name: str | None = None
 
     @field_validator("title")
     def validate_title(cls, v):
@@ -114,7 +113,7 @@ class AuthorCreate(BaseModel):
 
 
 class AuthorUpdate(BaseModel):
-    name: Optional[str] = None
+    name: str | None = None
 
     @field_validator("name")
     def validate_name(cls, v):

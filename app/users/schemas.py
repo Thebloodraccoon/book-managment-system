@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from app.exceptions.user_exceptions import InvalidEmailException, InvalidPasswordException
 

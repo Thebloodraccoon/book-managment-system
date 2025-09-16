@@ -1,9 +1,8 @@
-from typing import Optional
 
-from fastapi import APIRouter, Query, UploadFile, File, status
+from fastapi import APIRouter, File, Query, UploadFile, status
 
 from app.books.schemas import BookCreate, BookResponse, BookUpdate, BulkImportResponse
-from app.core.dependencies import CurrentUserDep, BookServiceDep
+from app.core.dependencies import BookServiceDep, CurrentUserDep
 
 router = APIRouter()
 
@@ -13,11 +12,11 @@ def get_books(
     book_service: BookServiceDep,
     page: int = Query(0, ge=0),
     size: int = Query(10, ge=1, le=100),
-    title: Optional[str] = Query(None),
-    author: Optional[str] = Query(None),
-    genre: Optional[str] = Query(None),
-    year_min: Optional[int] = Query(None, ge=1800),
-    year_max: Optional[int] = Query(None, le=2025),
+    title: str | None = Query(None),
+    author: str | None = Query(None),
+    genre: str | None = Query(None),
+    year_min: int | None = Query(None, ge=1800),
+    year_max: int | None = Query(None, le=2025),
     sort_by: str = Query("title", regex="^(title|published_year|author)$"),
     sort_order: str = Query("asc", regex="^(asc|desc)$")
 ):

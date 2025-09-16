@@ -1,13 +1,7 @@
 from datetime import datetime, timezone
 from enum import Enum
 
-from sqlalchemy import (
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    String
-)
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship
 

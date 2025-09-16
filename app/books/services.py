@@ -1,19 +1,18 @@
 import csv
-import json
 from io import StringIO
-from typing import Optional
+import json
 
 from fastapi import UploadFile
-from sqlalchemy import text, func
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
-from app.books.repository import BookRepository, AuthorRepository
-from app.books.schemas import BookCreate, BookUpdate, BookResponse, BulkImportResponse, BookImportData
+from app.books.repository import AuthorRepository, BookRepository
+from app.books.schemas import BookCreate, BookImportData, BookResponse, BookUpdate, BulkImportResponse
 from app.exceptions.book_exceptions import (
-    BookNotFoundException,
     BookAlreadyExistsException,
+    BookNotFoundException,
+    EmptyFileException,
     InvalidFileFormatException,
-    EmptyFileException
 )
 
 
@@ -45,9 +44,9 @@ class BookService:
 
         return BookResponse.model_validate(book)
 
-    def get_books(self, page: int = 0, size: int = 10, title: Optional[str] = None,
-                  author: Optional[str] = None, genre: Optional[str] = None,
-                  year_min: Optional[int] = None, year_max: Optional[int] = None,
+    def get_books(self, page: int = 0, size: int = 10, title: str | None = None,
+                  author: str | None = None, genre: str | None = None,
+                  year_min: int | None = None, year_max: int | None = None,
                   sort_by: str = "title", sort_order: str = "asc") -> list[BookResponse]:
         """Get books with filtering, pagination, and sorting using raw SQL."""
 
@@ -139,10 +138,7 @@ class BookService:
         content = await file.read()
         content_str = content.decode('utf-8')
 
-        if file.filename.endswith('.csv'):
-            books_data = self._parse_csv(content_str)
-        else:
-            books_data = self._parse_json(content_str)
+        books_data = self._parse_csv(content_str) if file.filename.endswith('.csv') else self._parse_json(content_str)
 
         successful_imports = 0
         errors = []

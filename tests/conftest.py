@@ -11,7 +11,7 @@ import pyotp
 import pytest
 import pytest_asyncio
 from redis.asyncio import Redis
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.auth.utils.pwd_utils import get_password_hash

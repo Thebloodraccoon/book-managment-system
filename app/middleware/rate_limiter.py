@@ -1,7 +1,6 @@
 # app/middleware/rate_limiter.py
-import time
 from collections import defaultdict, deque
-from typing import Dict, Deque
+import time
 
 from fastapi import HTTPException, Request, status
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -14,7 +13,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
         self.requests_per_hour = requests_per_hour
-        self.requests: Dict[str, Deque[float]] = defaultdict(deque)
+        self.requests: dict[str, deque[float]] = defaultdict(deque)
 
         self.last_cleanup = time.time()
         self.cleanup_interval = 300
@@ -76,10 +75,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             return True
 
         recent_requests = sum(1 for req_time in requests if current_time - req_time < 60)
-        if recent_requests >= self.requests_per_minute:
-            return True
 
-        return False
+        return recent_requests >= self.requests_per_minute
 
     def _cleanup_old_requests(self, current_time: float):
         """Remove old request records to prevent memory leaks."""

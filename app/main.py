@@ -1,15 +1,15 @@
-import logging
 from contextlib import asynccontextmanager
-
-import uvicorn
+import logging
 
 from fastapi import FastAPI
+import uvicorn
+
+from app.auth.endpoints import router as auth_router
+from app.books.endpoints import router as book_router
 from app.middleware.error_handler import setup_error_handlers
 from app.ping.endpoints import router as ping_router
-from app.auth.endpoints import router as auth_router
-from app.users.endpoints import router as user_router
-from app.books.endpoints import router as book_router
 from app.settings import settings
+from app.users.endpoints import router as user_router
 
 logger = logging.getLogger(__name__)
 

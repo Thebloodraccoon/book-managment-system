@@ -17,7 +17,6 @@ def test_create_user_success(db_session, role):
         role=role,
     )
     user = service.create_user(data)
-    assert user.username == f"new_user_{role}"
     assert user.email == f"new_{role}@example.com"
     assert user.role == role
 
@@ -48,7 +47,7 @@ def test_get_user_by_id_not_found(db_session):
 def test_get_user_by_email_success(db_session, test_user):
     service = UserService(db_session)
     user = service.get_user_by_email(test_user.email)
-    assert user.username == test_user.username
+    assert user.email == test_user.email
 
 
 def test_get_user_by_email_not_found(db_session):
@@ -70,7 +69,7 @@ def test_get_all_users(db_session, test_user):
         (UserUpdate(email="updated@example.com"), {"email": "updated@example.com"}),
         (
             UserUpdate(email="both@example.com"),
-            {"username": "updated_both", "email": "both@example.com"},
+            {"email": "both@example.com"},
         ),
     ],
 )

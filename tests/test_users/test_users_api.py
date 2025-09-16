@@ -14,8 +14,8 @@ async def test_get_users(async_client: AsyncClient, test_admin_token):
 @pytest.mark.parametrize(
     "payload",
     [
-        {"username": "newuser1", "email": "newuser1@example.com", "password": "securepassword123", "role": "user"},
-        {"username": "adminuser", "email": "admin@example.com", "password": "securepassword123", "role": "admin"},
+        {"email": "newuser1@example.com", "password": "securepassword123", "role": "user"},
+        {"email": "admin@example.com", "password": "securepassword123", "role": "admin"},
     ],
 )
 async def test_create_user(async_client: AsyncClient, test_admin_token, payload):
@@ -25,7 +25,6 @@ async def test_create_user(async_client: AsyncClient, test_admin_token, payload)
         headers={"Authorization": f"Bearer {test_admin_token.credentials}"},
     )
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.json()["username"] == payload["username"]
     assert response.json()["email"] == payload["email"]
     assert response.json()["role"] == payload["role"]
 
@@ -47,7 +46,6 @@ async def test_get_user_by_id(async_client: AsyncClient, request, test_admin_tok
 @pytest.mark.parametrize(
     "update_payload",
     [
-        {"username": "updatedusername"},
         {"email": "updatedemail@example.com"},
         {"role": "admin"},
     ],
