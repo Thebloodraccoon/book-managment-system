@@ -10,7 +10,7 @@ def generate_otp_secret() -> str:
     return pyotp.random_base32()
 
 
-def generate_otp_uri(email: str, secret: str, issuer: str = "Slavbor World") -> str:
+def generate_otp_uri(email: str, secret: str, issuer: str = "Book managment system") -> str:
     totp = pyotp.TOTP(secret)
     return totp.provisioning_uri(name=email, issuer_name=issuer)
 
