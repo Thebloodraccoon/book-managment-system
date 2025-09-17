@@ -1,6 +1,8 @@
 # Book Management System
 
-Book Management System is web application with a RESTful API backend built using FastAPI and PostgreSQL. The system provides comprehensive book management capabilities including CRUD operations, bulk import, advanced filtering, and JWT-based authentication. The project is containerized using Docker and Docker Compose.
+Book Management System is a web application with a RESTful API backend built using FastAPI and PostgreSQL. The system provides comprehensive book management capabilities including CRUD operations, bulk import, advanced filtering, and JWT-based authentication. The project is containerized using Docker and Docker Compose.  
+
+⚠️ **Important:** For the default admin user, 2FA (two-factor authentication) is **not enabled**.
 
 ## 📋 Requirements
 
