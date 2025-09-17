@@ -1,0 +1,218 @@
+[
+  {
+    "title": "The Great Gatsby",
+    "author_name": "F. Scott Fitzgerald",
+    "published_year": 1925,
+    "genre": "Fiction"
+  },
+  {
+    "title": "To Kill a Mockingbird",
+    "author_name": "Harper Lee",
+    "published_year": 1960,
+    "genre": "Fiction"
+  },
+  {
+    "title": "1984",
+    "author_name": "George Orwell",
+    "published_year": 1949,
+    "genre": "Fiction"
+  },
+  {
+    "title": "A Brief History of Time",
+    "author_name": "Stephen Hawking",
+    "published_year": 1988,
+    "genre": "Science"
+  },
+  {
+    "title": "The Art of War",
+    "author_name": "Sun Tzu",
+    "published_year": 1910,
+    "genre": "History"
+  },
+  {
+    "title": "Steve Jobs",
+    "author_name": "Walter Isaacson",
+    "published_year": 2011,
+    "genre": "Biography"
+  },
+  {
+    "title": "The Lord of the Rings",
+    "author_name": "J.R.R. Tolkien",
+    "published_year": 1954,
+    "genre": "Fantasy"
+  },
+  {
+    "title": "The Da Vinci Code",
+    "author_name": "Dan Brown",
+    "published_year": 2003,
+    "genre": "Mystery"
+  },
+  {
+    "title": "Pride and Prejudice",
+    "author_name": "Jane Austen",
+    "published_year": 1813,
+    "genre": "Romance"
+  },
+  {
+    "title": "The Girl with the Dragon Tattoo",
+    "author_name": "Stieg Larsson",
+    "published_year": 2005,
+    "genre": "Thriller"
+  },
+  {
+    "title": "Harry Potter and the Philosopher's Stone",
+    "author_name": "J.K. Rowling",
+    "published_year": 1997,
+    "genre": "Children"
+  },
+  {
+    "title": "Leaves of Grass",
+    "author_name": "Walt Whitman",
+    "published_year": 1855,
+    "genre": "Poetry"
+  },
+  {
+    "title": "Meditations",
+    "author_name": "Marcus Aurelius",
+    "published_year": 1906,
+    "genre": "Philosophy"
+  },
+  {
+    "title": "Think and Grow Rich",
+    "author_name": "Napoleon Hill",
+    "published_year": 1937,
+    "genre": "Self-Help"
+  },
+  {
+    "title": "On the Road",
+    "author_name": "Jack Kerouac",
+    "published_year": 1957,
+    "genre": "Travel"
+  },
+  {
+    "title": "The Joy of Cooking",
+    "author_name": "Irma S. Rombauer",
+    "published_year": 1931,
+    "genre": "Cooking"
+  },
+  {
+    "title": "The Story of Art",
+    "author_name": "E.H. Gombrich",
+    "published_year": 1950,
+    "genre": "Art"
+  },
+  {
+    "title": "The Purpose Driven Life",
+    "author_name": "Rick Warren",
+    "published_year": 2002,
+    "genre": "Religion"
+  },
+  {
+    "title": "Good to Great",
+    "author_name": "Jim Collins",
+    "published_year": 2001,
+    "genre": "Business"
+  },
+  {
+    "title": "The 4-Hour Workweek",
+    "author_name": "Timothy Ferriss",
+    "published_year": 2007,
+    "genre": "Business"
+  },
+  {
+    "title": "Atomic Habits",
+    "author_name": "James Clear",
+    "published_year": 2018,
+    "genre": "Self-Help"
+  },
+  {
+    "title": "Sapiens",
+    "author_name": "Yuval Noah Harari",
+    "published_year": 2011,
+    "genre": "History"
+  },
+  {
+    "title": "The Gene: An Intimate History",
+    "author_name": "Siddhartha Mukherjee",
+    "published_year": 2016,
+    "genre": "Science"
+  },
+  {
+    "title": "Educated",
+    "author_name": "Tara Westover",
+    "published_year": 2018,
+    "genre": "Biography"
+  },
+  {
+    "title": "The Hobbit",
+    "author_name": "J.R.R. Tolkien",
+    "published_year": 1937,
+    "genre": "Fantasy"
+  },
+  {
+    "title": "And Then There Were None",
+    "author_name": "Agatha Christie",
+    "published_year": 1939,
+    "genre": "Mystery"
+  },
+  {
+    "title": "Gone Girl",
+    "author_name": "Gillian Flynn",
+    "published_year": 2012,
+    "genre": "Thriller"
+  },
+  {
+    "title": "The Alchemist",
+    "author_name": "Paulo Coelho",
+    "published_year": 1988,
+    "genre": "Fiction"
+  },
+  {
+    "title": "Dune",
+    "author_name": "Frank Herbert",
+    "published_year": 1965,
+    "genre": "Science"
+  },
+  {
+    "title": "The Clean Code",
+    "author_name": "Robert C. Martin",
+    "published_year": 2008,
+    "genre": "Technology"
+  },
+  {
+    "title": "Design Patterns",
+    "author_name": "Erich Gamma",
+    "published_year": 1994,
+    "genre": "Technology"
+  },
+  {
+    "title": "The Pragmatic Programmer",
+    "author_name": "Andrew Hunt",
+    "published_year": 1999,
+    "genre": "Technology"
+  },
+  {
+    "title": "Becoming",
+    "author_name": "Michelle Obama",
+    "published_year": 2018,
+    "genre": "Biography"
+  },
+  {
+    "title": "The 7 Habits of Highly Effective People",
+    "author_name": "Stephen Covey",
+    "published_year": 1989,
+    "genre": "Self-Help"
+  },
+  {
+    "title": "Outliers",
+    "author_name": "Malcolm Gladwell",
+    "published_year": 2008,
+    "genre": "Non-Fiction"
+  },
+  {
+    "title": "The Clean Architecture",
+    "author_name": "Robert C. Martin",
+    "published_year": 2017,
+    "genre": "Technology"
+  }
+]

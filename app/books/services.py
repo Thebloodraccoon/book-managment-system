@@ -3,7 +3,7 @@ from io import StringIO
 import json
 
 from fastapi import UploadFile
-from sqlalchemy import func, text
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.books.repository import AuthorRepository, BookRepository
@@ -14,6 +14,7 @@ from app.exceptions.book_exceptions import (
     EmptyFileException,
     InvalidFileFormatException,
 )
+from app.models.book_model import GenreEnum
 
 
 class BookService:
@@ -28,10 +29,14 @@ class BookService:
         """Create a new book."""
         author = self.author_repo.get_by_name(data.author_name)
         if author:
-            existing_book = self.db.query(self.book_repo.model).filter(
-                func.lower(self.book_repo.model.title) == func.lower(data.title),
-                self.book_repo.model.author_id == author.id
-            ).first()
+            existing_book = (
+                self.db.query(self.book_repo.model)
+                .filter(
+                    func.lower(self.book_repo.model.title) == func.lower(data.title),
+                    self.book_repo.model.author_id == author.id,
+                )
+                .first()
+            )
             if existing_book:
                 raise BookAlreadyExistsException(data.title, data.author_name)
 
@@ -44,54 +49,37 @@ class BookService:
 
         return BookResponse.model_validate(book)
 
-    def get_books(self, page: int = 0, size: int = 10, title: str | None = None,
-                  author: str | None = None, genre: str | None = None,
-                  year_min: int | None = None, year_max: int | None = None,
-                  sort_by: str = "title", sort_order: str = "asc") -> list[BookResponse]:
+    def get_books(
+        self,
+        page: int = 0,
+        size: int = 10,
+        title: str | None = None,
+        author: str | None = None,
+        genre: str | None = None,
+        year_min: int | None = None,
+        year_max: int | None = None,
+        sort_by: str = "title",
+        sort_order: str = "asc",
+    ) -> list[BookResponse]:
         """Get books with filtering, pagination, and sorting using raw SQL."""
 
-        query = """
-                SELECT b.*, a.name as author_name, a.created_at as author_created_at, a.updated_at as author_updated_at
-                FROM books b
-                         JOIN authors a ON b.author_id = a.id
-                WHERE 1 = 1 \
-                """
-        params = {}
-
-        if title:
-            query += " AND LOWER(b.title) LIKE LOWER(:title)"
-            params["title"] = f"%{title}%"
-
-        if author:
-            query += " AND LOWER(a.name) LIKE LOWER(:author)"
-            params["author"] = f"%{author}%"
-
         if genre:
-            query += " AND b.genre = :genre"
-            params["genre"] = genre
+            try:
+                genre = GenreEnum[genre.upper().replace("-", "_")]
+            except KeyError:
+                raise ValueError(f"Invalid genre: {genre}")
 
-        if year_min:
-            query += " AND b.published_year >= :year_min"
-            params["year_min"] = year_min
-
-        if year_max:
-            query += " AND b.published_year <= :year_max"
-            params["year_max"] = year_max
-
-        sort_column = "b.title"
-        if sort_by == "published_year":
-            sort_column = "b.published_year"
-        elif sort_by == "author":
-            sort_column = "a.name"
-
-        query += f" ORDER BY {sort_column} {sort_order.upper()}"
-
-        query += " LIMIT :limit OFFSET :offset"
-        params["limit"] = size
-        params["offset"] = page * size
-
-        result = self.db.execute(text(query), params)
-        books = result.fetchall()
+        books = self.book_repo.get_books(
+            page=page,
+            size=size,
+            title=title,
+            author=author,
+            genre=genre,
+            year_min=year_min,
+            year_max=year_max,
+            sort_by=sort_by,
+            sort_order=sort_order,
+        )
 
         return [self._build_book_response(book) for book in books]
 
@@ -132,13 +120,13 @@ class BookService:
         if not file.filename:
             raise EmptyFileException()
 
-        if not (file.filename.endswith('.csv') or file.filename.endswith('.json')):
+        if not (file.filename.endswith(".csv") or file.filename.endswith(".json")):
             raise InvalidFileFormatException(file.filename)
 
         content = await file.read()
-        content_str = content.decode('utf-8')
+        content_str = content.decode("utf-8")
 
-        books_data = self._parse_csv(content_str) if file.filename.endswith('.csv') else self._parse_json(content_str)
+        books_data = self._parse_csv(content_str) if file.filename.endswith(".csv") else self._parse_json(content_str)
 
         successful_imports = 0
         errors = []
@@ -150,7 +138,7 @@ class BookService:
                     title=validated_data.title,
                     author_name=validated_data.author_name,
                     published_year=validated_data.published_year,
-                    genre=validated_data.genre
+                    genre=GenreEnum[validated_data.genre.upper().replace("-", "_")],
                 )
                 self.create_book(book_create)
                 successful_imports += 1
@@ -161,7 +149,7 @@ class BookService:
             total_processed=len(books_data),
             successful_imports=successful_imports,
             failed_imports=len(books_data) - successful_imports,
-            errors=errors
+            errors=errors,
         )
 
     @classmethod
@@ -173,7 +161,7 @@ class BookService:
                 "title": row.get("title", "").strip(),
                 "author_name": row.get("author_name", "").strip(),
                 "published_year": int(row.get("published_year", 0)),
-                "genre": row.get("genre", "").strip()
+                "genre": row.get("genre", "").strip(),
             }
             for row in csv_reader
         ]
@@ -196,9 +184,8 @@ class BookService:
             id=book_row.author_id,
             name=book_row.author_name,
             created_at=book_row.author_created_at,
-            updated_at=book_row.author_updated_at
+            updated_at=book_row.author_updated_at,
         )
-
 
         genre_value = book_row.genre
         if isinstance(genre_value, str):
@@ -217,5 +204,5 @@ class BookService:
             author_id=book_row.author_id,
             author=author_data,
             created_at=book_row.created_at,
-            updated_at=book_row.updated_at
+            updated_at=book_row.updated_at,
         )

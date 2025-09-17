@@ -22,6 +22,7 @@ async def lifespan(app: FastAPI):
     yield
     logger.info("Shutting down Book Managment System...")
 
+
 def setup_routers(app: FastAPI) -> None:
     """Setup API routes with proper versioning."""
     api_prefix = "/api"

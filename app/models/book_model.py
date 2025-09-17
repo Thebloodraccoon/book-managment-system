@@ -38,12 +38,16 @@ class Book(settings.Base):  # type: ignore
 
     title = Column(String(500), nullable=False, index=True)
     published_year = Column(Integer, nullable=False, index=True)
-    genre = Column(ENUM(GenreEnum, name="genre_enum"), nullable=False, index=True)
-    author_id = Column(Integer, ForeignKey('authors.id'), nullable=False, index=True)
+    genre = Column(ENUM(GenreEnum, name="genre_enum"), nullable=False, index=True)  # type: ignore
+    author_id = Column(Integer, ForeignKey("authors.id"), nullable=False, index=True)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True)
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
-                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
 
     author = relationship("Author", back_populates="books")
 

@@ -1,4 +1,3 @@
-# app/middleware/rate_limiter.py
 from collections import defaultdict, deque
 import time
 
@@ -33,7 +32,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail="Rate limit exceeded. Please try again later.",
-                headers={"Retry-After": "60"}
+                headers={"Retry-After": "60"},
             )
 
         self.requests[client_ip].append(current_time)
@@ -43,12 +42,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     @classmethod
     def _should_skip_rate_limiting(cls, request: Request) -> bool:
         """Skip rate limiting for certain endpoints."""
-        skip_paths = [
-            "/docs",
-            "/redoc",
-            "/openapi.json",
-            "/api/ping"
-        ]
+        skip_paths = ["/docs", "/redoc", "/openapi.json", "/api/ping"]
         return any(request.url.path.startswith(path) for path in skip_paths)
 
     @classmethod

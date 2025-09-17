@@ -16,7 +16,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app.auth.utils.pwd_utils import get_password_hash
 from app.main import app
-from app.models import User
+from app.models import Author, Book, User
+from app.models.book_model import GenreEnum
 from app.settings import settings
 
 test_engine = create_engine(settings.DATABASE_URL)
@@ -202,3 +203,77 @@ def generate_jwt_token():
         return jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
 
     return _generate_jwt_token
+
+
+@pytest.fixture
+def create_author(db_session):
+    def _create_author(name="Test Author"):
+        existing_author = db_session.query(Author).filter_by(name=name).first()
+        if existing_author:
+            return existing_author
+
+        author = Author(name=name)
+        db_session.add(author)
+        db_session.commit()
+        db_session.refresh(author)
+        return author
+
+    return _create_author
+
+
+@pytest.fixture
+def create_book(db_session, create_author):
+    def _create_book(title="Test Book", author_name="Test Author", published_year=2020, genre=GenreEnum.FICTION):
+        author = create_author(name=author_name)
+
+        existing_book = db_session.query(Book).filter_by(title=title, author_id=author.id).first()
+        if existing_book:
+            return existing_book
+
+        book = Book(title=title, published_year=published_year, genre=genre, author_id=author.id)
+        db_session.add(book)
+        db_session.commit()
+        db_session.refresh(book)
+        return book
+
+    return _create_book
+
+
+@pytest.fixture
+def test_author(create_author):
+    return create_author(name="J.K. Rowling")
+
+
+@pytest.fixture
+def test_book(create_book):
+    return create_book(
+        title="Harry Potter and the Philosopher's Stone",
+        author_name="J.K. Rowling",
+        published_year=1997,
+        genre=GenreEnum.CHILDREN,
+    )
+
+
+@pytest.fixture
+def test_books_multiple(create_book):
+    """Create multiple books for testing pagination and filtering."""
+    books = [
+        create_book("1984", "George Orwell", 1949, GenreEnum.FICTION),
+        create_book("Dune", "Frank Herbert", 1965, GenreEnum.SCIENCE),
+        create_book("The Hobbit", "J.R.R. Tolkien", 1937, GenreEnum.FANTASY),
+        create_book("Pride and Prejudice", "Jane Austen", 1813, GenreEnum.ROMANCE),
+        create_book("The Art of War", "Sun Tzu", 1910, GenreEnum.HISTORY),
+    ]
+    return books
+
+
+@pytest.fixture
+def get_book_service_dependency():
+    def override_get_book_service():
+        from app.books.services import BookService
+        from app.settings.test import get_db
+
+        db = next(get_db())
+        return BookService(db)
+
+    return override_get_book_service
